@@ -90,9 +90,10 @@ public class SystemNotes {
 
             // El temp tendrá la información del archivo
             // Ahora vamos a preparar y adaptar la informacion
-            String[] lines = temp.split("\n");
+            String[] lines = temp.split("\n"); // Separar contenido por lineas
 
             for (int i = 1; i < lines.length; i++) {
+                // Separar el contenido de la linea por comas para obtener los datos individualmente
                 String[] estudentData = lines[i].split(",");
 
                 String carne = estudentData[0];
@@ -108,7 +109,7 @@ public class SystemNotes {
                 int examen2 = Integer.parseInt(estudentData[10]);
                 int[] notes = { lab1, lab2, lab3, lab4, lab5, investigacion, proyecto, examen1, examen2 };
 
-                data.add(new DataStudent(carne, name, notes)); // Crear nuevo estudiante con sus respectivos datos
+                data.add(new DataStudent(carne, name, notes)); // Agregar nuevo estudiante con sus respectivos datos
             }
             
             // Text se usará para confirmar los datos del archivo
