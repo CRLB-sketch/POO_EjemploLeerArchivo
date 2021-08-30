@@ -9,7 +9,7 @@
  * 
  * @author Cristian Fernando Laynez Bachez - 201281
  * @since 26 - Agosto - 2021
- * @version 1.0
+ * @version 2.0
  * @category Ejemplo: Se puede utilizar como referencia libremente :)
  */
 

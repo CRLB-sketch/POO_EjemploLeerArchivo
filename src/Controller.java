@@ -7,7 +7,7 @@
  * 
  * @author Cristian Fernando Laynez Bachez - 201281
  * @since 26 - Agosto - 2021
- * @version 1.0
+ * @version 2.0
  * @category Ejemplo: Se puede utilizar como referencia libremente :)
  */
 
@@ -16,10 +16,12 @@ public class Controller {
     // Atributos <-----------------------------------------------------------------------------
     private SystemNotes sysNotes; // Modelo
     private View view; // Vista
+    private String fileName; // Para tener más facilidad con acceder
 
     // Constructor <---------------------------------------------------------------------------
     public Controller(){
-        sysNotes = new SystemNotes("docs/notasBiolo.csv");
+        fileName = "docs/notasBiolo.csv";
+        sysNotes = new SystemNotes(fileName);
         view = new View();
     }
 
@@ -66,8 +68,22 @@ public class Controller {
                     view.showInformation(sysNotes.seeStudentsApproved());
                     break;
 
-                // Terminar el programa
+                // Agregar estudiante al listado
                 case "5":
+                    String[] dataNewStudent = view.createNewStudent();                    
+                    sysNotes.addNewStudent(dataNewStudent);
+                    break;
+
+                // Cambiar dato/nota de un estudiante por medio de carne
+
+                // Guardar cambios en el documento
+                case "8":
+                    String infoFile = sysNotes.saveChanges(fileName);
+                    view.showInformation(infoFile);
+                    break;
+
+                // Terminar el programa
+                case "9":
                     finish = true;
                     view.exit();
                     break;

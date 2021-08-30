@@ -7,13 +7,18 @@
  * 
  * @author Cristian Fernando Laynez Bachez - 201281
  * @since 26 - Agosto - 2021
- * @version 1.0
+ * @version 2.0
  * @category Ejemplo: Se puede utilizar como referencia libremente :)
  */
 
 // Librerias para leer el contenido del archivo
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.Writer;
+import java.io.OutputStreamWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
 // Importar ArrayList
 import java.util.ArrayList;
  
@@ -21,12 +26,14 @@ public class SystemNotes {
 
     // Atributos <-----------------------------------------------------------------------------    
     private ArrayList<DataStudent> data; // Estudiantes almacenados
-    private String stateFile = ""; // Estado del archivo
+    private String stateFile; // Estado del archivo
+    private String header;
 
     // Constructor <---------------------------------------------------------------------------
     public SystemNotes(String nameFile){
         data = new ArrayList<DataStudent>();
         stateFile = readFileContent(nameFile); // Verificar si la información se leyo exitosamente
+        System.out.println("TAMAÑO: " + data.size());
     }
 
     // Getter <--------------------------------------------------------------------------------
@@ -35,6 +42,24 @@ public class SystemNotes {
     }
 
     // Métodos <-------------------------------------------------------------------------------    
+    public void addNewStudent(String[] dataNewStudent){
+        String carne = dataNewStudent[0];
+        String name = dataNewStudent[1];
+        int[] points = {
+            Integer.parseInt(dataNewStudent[2]),
+            Integer.parseInt(dataNewStudent[3]),
+            Integer.parseInt(dataNewStudent[4]),
+            Integer.parseInt(dataNewStudent[5]),
+            Integer.parseInt(dataNewStudent[6]),
+            Integer.parseInt(dataNewStudent[7]),
+            Integer.parseInt(dataNewStudent[8]),
+            Integer.parseInt(dataNewStudent[9]),
+            Integer.parseInt(dataNewStudent[10])
+        };
+
+        data.add(new DataStudent(carne, name, points));
+    }
+    
     public String showAllNamesOfList(){
         String information = "";
 
@@ -92,6 +117,8 @@ public class SystemNotes {
             // Ahora vamos a preparar y adaptar la informacion
             String[] lines = temp.split("\n"); // Separar contenido por lineas
 
+            header = lines[0];
+
             for (int i = 1; i < lines.length; i++) {
                 // Separar el contenido de la linea por comas para obtener los datos individualmente
                 String[] estudentData = lines[i].split(",");
@@ -120,5 +147,41 @@ public class SystemNotes {
         }
 
         return text;
+    }
+
+    public String saveChanges(String file){
+        String information = "";
+        
+        // Vamos a preparar toda la informacion
+        int numLineas = data.size() + 1; // Tamaño de la cantidad de elementos en el array más el encabezado
+        String[] lineas = new String[numLineas]; // Definir tamaño para almacenar las lineas correctas y exactas
+        lineas[0] = header; // Regresar el encabezado de nuevo
+        
+        for (int i = 1; i < lineas.length; i++) { // Empezamos desde 1 para evitar sobreescribir en el encabezado
+            DataStudent temp = data.get(i - 1); // Restamos uno para obtener el estudiante correcto
+            lineas[i] = temp.paraSobreescribirDatos();
+        }
+        
+        Writer out = null;
+        try {
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+
+            // Escribimos linea a linea en el documento
+			for (String linea : lineas) {
+				try {
+					out.write(linea + "\n");
+				} catch (IOException ex) {
+                    information = "\n-> ERROR: Se presento un inconveniente en la escritura";
+				}
+			}
+
+            out.close();
+            System.out.println("Se cerro con exito");
+            information = "\n-> DATOS GUARDADOS CON EXITO";
+        } catch (Exception e) {
+            information = "\n-> ERROR: No se encontro el archivo";
+        }
+
+        return information;
     }
 }

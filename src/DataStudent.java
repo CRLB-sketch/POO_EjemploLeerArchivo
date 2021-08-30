@@ -7,7 +7,7 @@
  * 
  * @author Cristian Fernando Laynez Bachez - 201281
  * @since 26 - Agosto - 2021
- * @version 1.0
+ * @version 2.0
  * @category Ejemplo: Se puede utilizar como referencia libremente :)
  */
 
@@ -47,6 +47,11 @@ public class DataStudent {
     public int avarage(){
         int sum = lab1 + lab2 + lab3 + lab4 + lab5 + investigacion + proyecto + examen1 + examen2;        
         return sum / TOTALACTIVITIES;
+    }
+
+    public String paraSobreescribirDatos(){
+        return carne + "," + nombre + "," + lab1 + "," + lab2 + "," + lab3 + "," + lab4 + "," + lab5 + "," 
+            + investigacion + "," + proyecto + "," + examen1 + "," + examen2;
     }
     
     @Override
